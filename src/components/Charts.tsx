@@ -1,0 +1,190 @@
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SensorData } from "@/types";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+
+interface ChartsProps {
+  data: SensorData[];
+  loading: boolean;
+}
+
+const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
+  const chartData = [...data].reverse().map((item) => ({
+    name: item.timestamp
+      ? new Date(item.timestamp).toLocaleTimeString()
+      : "N/A",
+    co2: item.co2,
+    noise: item.noise,
+    luminosity: item.luminosity,
+    pressure: item.pressure,
+    windSpeed: item.windSpeed,
+  }));
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="flex justify-between">
+          <span>Gráficos</span>
+          {loading && (
+            <span className="text-sm text-muted-foreground animate-pulse">
+              Cargando...
+            </span>
+          )}
+        </CardTitle>
+        <CardDescription>
+          Visualización de datos de sensores en tiempo real
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue="co2" className="w-full">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 mb-4">
+            <TabsTrigger value="co2">CO2</TabsTrigger>
+            <TabsTrigger value="noise">Ruido</TabsTrigger>
+            <TabsTrigger value="luminosity">Luminosidad</TabsTrigger>
+            <TabsTrigger value="pressure">Presión</TabsTrigger>
+            <TabsTrigger value="wind">Viento</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="co2">
+            <ChartCard
+              title="CO2"
+              dataKey="co2"
+              data={chartData}
+              color="#f87171"
+              unit="ppm"
+              loading={loading}
+            />
+          </TabsContent>
+
+          <TabsContent value="noise">
+            <ChartCard
+              title="Ruido"
+              dataKey="noise"
+              data={chartData}
+              color="#60a5fa"
+              unit="dB"
+              loading={loading}
+            />
+          </TabsContent>
+
+          <TabsContent value="luminosity">
+            <ChartCard
+              title="Luminosidad"
+              dataKey="luminosity"
+              data={chartData}
+              color="#fbbf24"
+              unit="lux"
+              loading={loading}
+            />
+          </TabsContent>
+
+          <TabsContent value="pressure">
+            <ChartCard
+              title="Presión Atmosférica"
+              dataKey="pressure"
+              data={chartData}
+              color="#a78bfa"
+              unit="hPa"
+              loading={loading}
+            />
+          </TabsContent>
+
+          <TabsContent value="wind">
+            <ChartCard
+              title="Velocidad del Viento"
+              dataKey="windSpeed"
+              data={chartData}
+              color="#34d399"
+              unit="km/h"
+              loading={loading}
+            />
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  );
+};
+
+interface ChartCardProps {
+  title: string;
+  dataKey: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+  color: string;
+  unit: string;
+  loading: boolean;
+}
+
+const ChartCard: React.FC<ChartCardProps> = ({
+  title,
+  dataKey,
+  data,
+  color,
+  unit,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  loading,
+}) => {
+  return (
+    <div className="w-full h-[300px] bg-card rounded-md p-4">
+      {data.length === 0 ? (
+        <div className="h-full flex items-center justify-center text-muted-foreground">
+          No hay datos disponibles
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 25,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+            <XAxis
+              dataKey="name"
+              angle={-45}
+              textAnchor="end"
+              height={60}
+              fontSize={12}
+            />
+            <YAxis unit={unit} />
+            <Tooltip
+              formatter={(value) => [`${value} ${unit}`, title]}
+              labelFormatter={(label) => `Tiempo: ${label}`}
+            />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey={dataKey}
+              stroke={color}
+              strokeWidth={2}
+              dot={{ fill: color }}
+              activeDot={{ r: 6 }}
+              name={title}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+    </div>
+  );
+};
+
+export default Charts;
