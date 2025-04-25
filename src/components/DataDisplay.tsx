@@ -26,7 +26,7 @@ interface DataDisplayProps {
 
 const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
   const [activeTab, setActiveTab] = useState<string>("table");
-  const latestData = data.length > 0 ? data[0] : null;
+  const latestData = data.length > 0 ? data[data.length - 1] : null;
 
   const formatTimestamp = (timestamp?: string) => {
     if (!timestamp) return "N/A";
@@ -56,6 +56,9 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
           </TabsList>
 
           <TabsContent value="table" className="space-y-4">
+            <h4 className="text-sm font-medium mb-2">
+              Últimos datos registrados
+            </h4>
             <div className="border rounded-md overflow-hidden">
               <Table>
                 <TableHeader>
