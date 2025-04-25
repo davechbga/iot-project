@@ -1,4 +1,5 @@
 import "./App.css";
+import "./index.css";
 import { Toaster } from "./components/ui/sonner";
 import Index from "./pages/Index";
 

@@ -96,9 +96,9 @@ const SensorStatus: React.FC<SensorStatusProps> = ({
     <div
       className={`p-2 border rounded-md ${
         status === "warning"
-          ? "border-warning/50 bg-warning/10"
+          ? "border-yellow-800 bg-yellow-500"
           : status === "error"
-          ? "border-destructive/50 bg-destructive/10"
+          ? "border-red-800 bg-red-500"
           : "border-muted"
       }`}
     >
