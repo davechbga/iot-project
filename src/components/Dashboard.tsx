@@ -54,9 +54,10 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 mb-10">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <div className="space-y-6">
+      {/* Header Section */}
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
           Panel de Control de Sensores
         </h1>
 
@@ -69,21 +70,25 @@ const Dashboard: React.FC = () => {
           <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
           Actualizar
         </Button>
-      </div>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
-        <div className="md:col-span-2 ">
-          <SystemStatus data={sensorData} lastUpdated={lastUpdated} />
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <div className="xl:col-span-8 space-y-6">
+          <SystemStatus
+            data={sensorData}
+            lastUpdated={lastUpdated}
+            loading={loading}
+          />
+
+          <Charts data={sensorData} loading={loading} />
         </div>
-        <div className="md:col-span-1">
+
+        <div className="xl:col-span-4 space-y-6">
           <SensorForm onDataSent={handleDataSent} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
-        <Charts data={sensorData} loading={loading} />
-        <DataDisplay data={sensorData} loading={loading} />
-      </div>
+      <DataDisplay data={sensorData} loading={loading} />
     </div>
   );
 };

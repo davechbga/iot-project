@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { SensorData } from "@/types";
 import { sendSensorData } from "@/utils/api";
-import { Volume2, Cloud, Sun, Thermometer, Wind } from "lucide-react";
+import { Volume2, Sun, Gauge, Wind, AirVent } from "lucide-react";
 
 interface SensorFormProps {
   onDataSent: () => void;
@@ -84,8 +84,8 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="h-full">
+      <CardHeader className="pb-2">
         <CardTitle>Simulador de Sensores</CardTitle>
         <CardDescription>
           Ingrese datos de sensores para enviar a ThingSpeak
@@ -93,10 +93,10 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Cloud className="w-4 h-4" />
+                <AirVent className="w-5 h-5" />
                 <Label htmlFor="co2">CO2 (ppm)</Label>
               </div>
               <Input
@@ -109,12 +109,16 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
                 value={formData.co2}
                 onChange={handleChange}
                 required
+                className="bg-muted/30"
               />
+              <p className="text-xs text-muted-foreground">
+                Nivel de dióxido de carbono en el ambiente (300-5000 ppm)
+              </p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4" />
+                <Volume2 className="w-5 h-5" />
                 <Label htmlFor="noise">Ruido (dB)</Label>
               </div>
               <Input
@@ -127,12 +131,16 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
                 value={formData.noise}
                 onChange={handleChange}
                 required
+                className="bg-muted/30"
               />
+              <p className="text-xs text-muted-foreground">
+                Nivel de ruido ambiental (0-120 dB)
+              </p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Sun className="w-4 h-4" />
+                <Sun className="w-5 h-5" />
                 <Label htmlFor="luminosity">Luminosidad (lux)</Label>
               </div>
               <Input
@@ -144,12 +152,16 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
                 value={formData.luminosity}
                 onChange={handleChange}
                 required
+                className="bg-muted/30"
               />
+              <p className="text-xs text-muted-foreground">
+                Nivel de iluminación ambiental (0+ lux)
+              </p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Thermometer className="w-4 h-4" />
+                <Gauge className="w-5 h-5" />
                 <Label htmlFor="pressure">Presión Atmosférica (hPa)</Label>
               </div>
               <Input
@@ -162,12 +174,16 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
                 value={formData.pressure}
                 onChange={handleChange}
                 required
+                className="bg-muted/30"
               />
+              <p className="text-xs text-muted-foreground">
+                Presión atmosférica (900-1100 hPa)
+              </p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Wind className="w-4 h-4" />
+                <Wind className="w-5 h-5" />
                 <Label htmlFor="windSpeed">Velocidad del Viento (km/h)</Label>
               </div>
               <Input
@@ -180,7 +196,11 @@ const SensorForm: React.FC<SensorFormProps> = ({ onDataSent }) => {
                 value={formData.windSpeed}
                 onChange={handleChange}
                 required
+                className="bg-muted/30"
               />
+              <p className="text-xs text-muted-foreground">
+                Velocidad del viento (0-200 km/h)
+              </p>
             </div>
           </div>
         </form>

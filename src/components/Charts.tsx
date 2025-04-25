@@ -37,10 +37,10 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
   }));
 
   return (
-    <Card className="w-full">
-      <CardHeader>
+    <Card >
+      <CardHeader className="pb-2">
         <CardTitle className="flex justify-between">
-          <span>Gráficos</span>
+          <span>Gráficos de Sensores</span>
           {loading && (
             <span className="text-sm text-muted-foreground animate-pulse">
               Cargando...
@@ -69,6 +69,7 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
               color="#f87171"
               unit="ppm"
               loading={loading}
+              description="Nivel de dióxido de carbono en el ambiente"
             />
           </TabsContent>
 
@@ -80,6 +81,7 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
               color="#60a5fa"
               unit="dB"
               loading={loading}
+              description="Nivel de ruido ambiental"
             />
           </TabsContent>
 
@@ -91,6 +93,7 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
               color="#fbbf24"
               unit="lux"
               loading={loading}
+              description="Nivel de iluminación ambiental"
             />
           </TabsContent>
 
@@ -102,6 +105,7 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
               color="#a78bfa"
               unit="hPa"
               loading={loading}
+              description="Presión atmosférica actual"
             />
           </TabsContent>
 
@@ -113,6 +117,7 @@ const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
               color="#34d399"
               unit="km/h"
               loading={loading}
+              description="Velocidad actual del viento"
             />
           </TabsContent>
         </Tabs>
@@ -129,6 +134,7 @@ interface ChartCardProps {
   color: string;
   unit: string;
   loading: boolean;
+  description: string;
 }
 
 const ChartCard: React.FC<ChartCardProps> = ({
@@ -137,52 +143,64 @@ const ChartCard: React.FC<ChartCardProps> = ({
   data,
   color,
   unit,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loading,
+  description,
 }) => {
   return (
-    <div className="w-full h-[300px] bg-card rounded-md p-4">
-      {data.length === 0 ? (
-        <div className="h-full flex items-center justify-center text-muted-foreground">
-          No hay datos disponibles
-        </div>
-      ) : (
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 25,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis
-              dataKey="name"
-              angle={-45}
-              textAnchor="end"
-              height={60}
-              fontSize={12}
-            />
-            <YAxis unit={unit} />
-            <Tooltip
-              formatter={(value) => [`${value} ${unit}`, title]}
-              labelFormatter={(label) => `Tiempo: ${label}`}
-            />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey={dataKey}
-              stroke={color}
-              strokeWidth={2}
-              dot={{ fill: color }}
-              activeDot={{ r: 6 }}
-              name={title}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      )}
+    <div className="space-y-2">
+      <div className="text-sm text-muted-foreground">
+        {description}
+      </div>
+      <div className="w-full h-[300px] bg-muted/30 rounded-md p-4">
+        {loading ? (
+          <div className="h-full flex items-center justify-center">
+            <div className="flex flex-col items-center gap-2">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <p className="text-sm text-muted-foreground">Cargando datos...</p>
+            </div>
+          </div>
+        ) : data.length === 0 ? (
+          <div className="h-full flex items-center justify-center text-muted-foreground">
+            No hay datos disponibles
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 25,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+              <XAxis
+                dataKey="name"
+                angle={-45}
+                textAnchor="end"
+                height={60}
+                fontSize={12}
+              />
+              <YAxis unit={unit} />
+              <Tooltip
+                formatter={(value) => [`${value} ${unit}`, title]}
+                labelFormatter={(label) => `Tiempo: ${label}`}
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey={dataKey}
+                stroke={color}
+                strokeWidth={2}
+                dot={{ fill: color }}
+                activeDot={{ r: 6 }}
+                name={title}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
     </div>
   );
 };

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { SensorData } from "@/types";
 import { AirVent, Volume2, Sun, Gauge, Wind } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataDisplayProps {
   data: SensorData[];
@@ -34,9 +35,9 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-2">
         <CardTitle className="flex justify-between">
-          <span>Datos Recibidos</span>
+          <span>Datos de Sensores</span>
           {loading && (
             <span className="text-sm text-muted-foreground animate-pulse">
               Cargando...
@@ -65,7 +66,80 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {latestData ? (
+                  {loading ? (
+                    <>
+                      <TableRow>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <AirVent className="h-4 w-4" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Volume2 className="h-4 w-4" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Sun className="h-4 w-4" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Gauge className="h-4 w-4" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Wind className="h-4 w-4" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-8" />
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  ) : latestData ? (
                     <>
                       <TableRow>
                         <TableCell className="flex items-center gap-2">
@@ -143,18 +217,45 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {data.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>
-                            {formatTimestamp(item.timestamp)}
-                          </TableCell>
-                          <TableCell>{item.co2} ppm</TableCell>
-                          <TableCell>{item.noise} dB</TableCell>
-                          <TableCell>{item.luminosity} lux</TableCell>
-                          <TableCell>{item.pressure} hPa</TableCell>
-                          <TableCell>{item.windSpeed} km/h</TableCell>
-                        </TableRow>
-                      ))}
+                      {loading ? (
+                        <>
+                          {[...Array(3)].map((_, index) => (
+                            <TableRow key={index}>
+                              <TableCell>
+                                <Skeleton className="h-4 w-32" />
+                              </TableCell>
+                              <TableCell>
+                                <Skeleton className="h-4 w-12" />
+                              </TableCell>
+                              <TableCell>
+                                <Skeleton className="h-4 w-12" />
+                              </TableCell>
+                              <TableCell>
+                                <Skeleton className="h-4 w-12" />
+                              </TableCell>
+                              <TableCell>
+                                <Skeleton className="h-4 w-12" />
+                              </TableCell>
+                              <TableCell>
+                                <Skeleton className="h-4 w-12" />
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </>
+                      ) : (
+                        data.slice(0, 5).map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              {formatTimestamp(item.timestamp)}
+                            </TableCell>
+                            <TableCell>{item.co2} ppm</TableCell>
+                            <TableCell>{item.noise} dB</TableCell>
+                            <TableCell>{item.luminosity} lux</TableCell>
+                            <TableCell>{item.pressure} hPa</TableCell>
+                            <TableCell>{item.windSpeed} km/h</TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </div>
@@ -163,9 +264,18 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading }) => {
           </TabsContent>
 
           <TabsContent value="json">
-            <pre className="bg-muted p-4 rounded-md overflow-auto max-h-[500px] text-xs">
-              {JSON.stringify(data, null, 2)}
-            </pre>
+            <div className="text-sm text-muted-foreground mb-2">
+              Datos en formato JSON para desarrollo y depuración
+            </div>
+            {loading ? (
+              <div className="bg-muted/30 p-4 rounded-md overflow-auto max-h-[300px]">
+                <Skeleton className="h-[250px] w-full" />
+              </div>
+            ) : (
+              <pre className="bg-muted/30 p-4 rounded-md overflow-auto max-h-[300px] text-xs">
+                {JSON.stringify(data, null, 2)}
+              </pre>
+            )}
           </TabsContent>
         </Tabs>
       </CardContent>
