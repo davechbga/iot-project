@@ -25,7 +25,7 @@ interface ChartsProps {
 }
 
 const Charts: React.FC<ChartsProps> = ({ data, loading }) => {
-  const chartData = [...data].reverse().map((item) => ({
+  const chartData = [...data].map((item) => ({
     name: item.timestamp
       ? new Date(item.timestamp).toLocaleTimeString()
       : "N/A",
