@@ -1,54 +1,143 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🌐 IoT Dashboard - Tecnologías Emergentes (UNIR)
 
-Currently, two official plugins are available:
+Proyecto realizado para la asignatura **Tecnologías Emergentes** de la **UNIR**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📚 Índice
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- [Descripción](#-descripción)
+- [Objetivos logrados](#-objetivos-logrados)
+- [Tecnologías utilizadas](#-tecnologías-utilizadas)
+- [Vista general del Dashboard](#-vista-general-del-dashboard)
+- [Instalación y ejecución](#-instalación-y-ejecución)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Mejoras futuras](#-mejoras-futuras)
+- [Licencia](#-licencia)
+
+
+
+## 🧠 Descripción
+
+Esta aplicación web permite la gestión **intuitiva** de datos ambientales provenientes de sensores **IoT** utilizando **ThingSpeak** como plataforma de backend.
+
+Construido con una stack moderna, el proyecto integra **APIs REST** para la obtención y visualización de datos en **tiempo real**.
+
+
+
+## 🎯 Objetivos logrados
+
+- ✅ **Integración con ThingSpeak**: obtención y envío de datos de sensores IoT de manera ágil.
+- ✅ **Interfaz React + Tailwind**: gestión intuitiva y moderna de datos ambientales.
+- ✅ **Prototipado rápido**: uso de frameworks modernos para acelerar el desarrollo funcional.
+- ✅ **Escalabilidad**: diseño preparado para futuras integraciones en smart cities o sistemas reales.
+
+
+
+## 🚀 Tecnologías utilizadas
+
+- ⚛️ **React**
+- 🛡️ **TypeScript**
+- ⚡ **Vite**
+- 🎨 **TailwindCSS**
+- 🖌️ **Shadcn/ui**
+- ✨ **Lucide-react** (iconografía)
+- 🔔 **Sonner** (notificaciones)
+
+
+
+## 📸 Vista general del Dashboard
+
+El Dashboard principal de la app contiene:
+
+- 🔄 Botón de actualización de datos en tiempo real.
+- 📊 Gráficas dinámicas de datos ambientales (**temperatura**, **humedad**, etc.).
+- 📈 Sección de estado del sistema con actualización automática.
+- 📥 Formulario de envío de datos a ThingSpeak.
+- 📋 Tabla de datos recibidos del canal.
+
+### 🛠 Estructura básica del Dashboard (fragmento)
+
+```tsx
+<div className="space-y-6">
+  <header> {/* Título y botón de refrescar */} </header>
+  <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+    <SystemStatus />
+    <Charts />
+    <SensorForm />
+  </div>
+  <DataDisplay />
+</div>
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+El Dashboard **refresca automáticamente** los datos cada 30 segundos y permite envío manual de nuevos datos a través del formulario.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+
+## 🛠 Instalación y ejecución
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/nombre-del-repo.git
 ```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Configurar el entorno
+
+Crea un archivo `.env` en la raíz del proyecto con tus claves de API de ThingSpeak:
+
+```env
+VITE_THINGSPEAK_API_KEY=tu_api_key
+VITE_THINGSPEAK_CHANNEL_ID=tu_channel_id
+```
+
+### 4. Iniciar la app
+
+```bash
+npm run dev
+```
+
+Accede a la app en 👉 **[http://localhost:5173](http://localhost:5173)**
+
+
+## 📂 Estructura del proyecto
+
+```bash
+src/
+├── components/
+│   ├── Charts.tsx
+│   ├── DataDisplay.tsx
+│   ├── SensorForm.tsx
+│   └── SystemStatus.tsx
+├── utils/
+│   └── api.ts
+├── types/
+│   └── SensorData.ts
+├── pages/
+│   └── Dashboard.tsx
+└── App.tsx
+```
+
+
+
+## ⚡ Mejoras futuras
+
+- 🌍 Implementar geolocalización de sensores.
+- 📡 Soporte para múltiples canales y tipos de sensores.
+- 📈 Integración de dashboards personalizados con filtros avanzados.
+- ☁️ Despliegue en plataformas cloud como **Vercel** o **Netlify**.
+
+
+
+## 📜 Licencia
+
+Este proyecto se entrega como **actividad académica** para **UNIR**.  
+Código abierto para fines **educativos** y **demostrativos**.
+
